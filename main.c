@@ -10,8 +10,10 @@ int gameboard[N][N]	;
 //------------------------------------
 //사용자 정의 함수 
 //------------------------------------
-void init_othello(void);
-void print_othello(void);
+void init_othello(void)		;
+void print_othello(void)	;
+int put_stone(int turn)		;
+void cnt_stones(void)		;
  
 //------------------------------------
 //MAIN
@@ -30,90 +32,10 @@ void main(void)
 	{
 		turn =k+1	;
 	
-		//현재 turn의 player의 알 색깔 안내 
-		switch(turn)
-		{
-			case 1:
-				printf(" Your stone is WHITE(1).\n")	;
-				break	;
-			case 2:
-				printf(" Your stone is BLACK(2).\n")	;
-				break	;
-		}
-	
-		//현재 배치된 알의 개수  
-		W_cnt =0	;
-		B_cnt =0	;
-		X_cnt =0	;
-		
-		for(i=0; i<N; i++)
-		{
-			for(j=0; j<N; j++)
-			{
-				if(gameboard[i][j] == 1)
-				{
-					W_cnt++		;
-				}
-				else if(gameboard[i][j] == 2)
-				{
-					B_cnt++		;
-				}
-				else
-				{
-					X_cnt++		;
-				}
-			
-			}
-		}
-		printf(" WHITE(1) : %d, BLACK(2) : %d, Empty Section : %d\n", W_cnt, B_cnt, X_cnt)			;
-
-	
-		//배치할 칸 좌표 입력에 대한 안내 
-		printf(" Where would you like to put it?\n")	;
-		printf(" Row : ")		;
-		scanf("%d", &R_here)	; 
-		printf(" Column : ")	;
-		scanf("%d", &C_here)	; 
-	
-		//선택한 칸에 player의 알 정보(1 or 2) 저장  
-		switch(turn)
-		{
-			case 1:		//white =1
-				gameboard[R_here -1][C_here -1]	=	turn	;
-				break	;
-			case 2:		//black =2
-				gameboard[R_here -1][C_here -1]	=	turn	;
-				break	;			
-		}
-	
-		print_othello(); 
+		put_stone(turn)		;
+		print_othello()		; 
 
 	}	
-	//현재 배치된 알의 개수_final
-	W_cnt =0	;
-	B_cnt =0	;
-	X_cnt =0	;
-		
-	for(i=0; i<N; i++)
-	{
-		for(j=0; j<N; j++)
-		{
-			if(gameboard[i][j] == 1)
-			{
-				W_cnt++		;
-			}
-			else if(gameboard[i][j] == 2)
-			{
-				B_cnt++		;
-			}
-			else
-			{
-				X_cnt++		;
-			}
-	
-		}
-	}
-	printf(" WHITE(1) : %d, BLACK(2) : %d, Empty section : %d\n", W_cnt, B_cnt, X_cnt)			;
 	
 	return 0	;
 }
@@ -174,5 +96,72 @@ void print_othello(void)
 		}
 		printf("\n\n\n")			;
 	}
+
+	cnt_stones()	;
 	
 }
+//배치할 칸 좌표 입력 및 값 저장  
+int put_stone(int turn)
+{
+	int R_here, C_here	;
+	
+	//현재 turn의 player의 알 색깔 안내 
+	switch(turn)
+	{
+		case 1:
+			printf(" Your stone is WHITE(1).\n\n")	;
+			break	;
+		case 2:
+			printf(" Your stone is BLACK(2).\n\n")	;
+			break	;
+	}
+	
+	//배치할 칸 좌표 입력에 대한 안내 
+	printf(" Where would you like to put it?\n")	;
+	printf("\tRow    : ")		;
+	scanf("%d", &R_here)	; 
+	printf("\tColumn : ")	;
+	scanf("%d", &C_here)	; 
+
+	//선택한 칸에 player의 알 정보(1 or 2) 저장  
+	switch(turn)
+	{
+		case 1:		//white =1
+			gameboard[R_here -1][C_here -1]	=	turn	;
+			break	;
+		case 2:		//black =2
+			gameboard[R_here -1][C_here -1]	=	turn	;
+			break	;			
+	}
+}
+//현재 배치된 알의 개수 counting 및 상태 출력  
+void cnt_stones(void)
+{
+	//counting 초기화  
+	int W_cnt =0	;
+	int B_cnt =0	;
+	int X_cnt =0	;
+	int i, j	;
+	
+	//배열 요소를 하나씩 값 비교하여 조건과 맞는 변수가 1 증가  
+	for(i=0; i<N; i++)
+	{
+		for(j=0; j<N; j++)
+		{
+			if(gameboard[i][j] == 1)
+			{
+				W_cnt++		;
+			}
+			else if(gameboard[i][j] == 2)
+			{
+				B_cnt++		;
+			}
+			else
+			{
+				X_cnt++		;
+			}
+
+		}
+	}
+	printf(" WHITE(1) : %d, BLACK(2) : %d, Empty Section(0) : %d\n\n", W_cnt, B_cnt, X_cnt)	;
+ } 

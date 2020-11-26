@@ -28,6 +28,13 @@ void main(void)
 	init_othello();
 	print_othello(); 
 	
+	//게임 종료 조건 1. 빈 칸 있어도 return fnd =0이면 종료, fnd=1이면 입력 받음 2. 빈 칸이 없을 때 3. 
+	while(isGameEnd() == 0)
+	{
+		
+	} 
+	
+	 
 	for(k=0; k<2; k++)
 	{
 		turn =k+1	;
@@ -164,4 +171,146 @@ void cnt_stones(void)
 		}
 	}
 	printf(" WHITE(1) : %d, BLACK(2) : %d, Empty Section(0) : %d\n\n", W_cnt, B_cnt, X_cnt)	;
- } 
+}
+//기존 배치된 알을 뒤집을 수 있는 칸 탐색
+int find_section(int turn)
+{
+	//turn =2
+	//1인 칸을 모두 골라냄
+	//임의의 칸 gameboard[i][j]
+	//이를 둘러싼 8방향 섹션에 2가 있는가?
+	//있다면 1을 점대칭한 맞은편이 비어있는가?
+	
+	int fnd		;	//0(배치 가능한 칸이 없다.)혹은 1(배치 가능한 칸이 있다.) 값만 가짐. 
+	int res		=0;	//8방향에 대해 배치 가능한 칸이 알아본 후, 하나 이상의 fnd =1이 존재하는 지 알아보기 위한 임의의 변수  
+	int fnd1, fnd2, fnd3, fnd4, fnd5, fnd6, fnd7, fnd8	;
+	
+	switch(turn)
+	{
+		case(1) :
+			for(i=0; i<N; i++)
+			{
+				for(j=0; j<N; j++)
+				{
+					if(gameboard[i][j] == 2)
+					{
+						fnd1 =one_direction(i, j)	;	//gameboard[i-1][j-1]
+						fnd2 =two_direction(i, j)	;	//gameboard[i-1][j]
+						fnd3 =thr_direction(i, j)	;	//gameboard[i-1][j+1]
+						fnd4 =fou_direction(i, j)	;	//gameboard[i][j-1]
+						fnd5 =fiv_direction(i, j)	;	//gameboard[i][j+1]
+						fnd6 =six_direction(i, j)	;	//gameboard[i+1][j-1]
+						fnd7 =sev_direction(i, j)	;	//gameboard[i+1][j]
+						fnd8 =eig_direction(i, j)	;	//gameboard[i+1][j+1]
+				
+						res = fnd1 + fnd2 + fnd3 + fnd4 + fnd5 + fnd6 + fnd7 + fnd8 ;
+						
+						if(res >= 1)
+						{
+							res++	;
+						}
+						else
+						{
+							res = res	;
+						}
+					}
+					else
+					{
+						gameboard[i][j] = gameboard[i][j]	;
+					}	
+				}
+			}
+			if(res > 8)
+			{
+				fnd = 1;
+			}
+			else
+			{
+				fnd = 0;
+			}
+			break	;
+			
+		case(2) :
+			for(i=0; i<N; i++)
+			{
+				for(j=0; j<N; j++)
+				{
+					if(gameboard[i][j] == 1)
+					{
+						fnd1 =one_direction(i, j)	;	//gameboard[i-1][j-1]
+						fnd2 =two_direction(i, j)	;	//gameboard[i-1][j]
+						fnd3 =thr_direction(i, j)	;	//gameboard[i-1][j+1]
+						fnd4 =fou_direction(i, j)	;	//gameboard[i][j-1]
+						fnd5 =fiv_direction(i, j)	;	//gameboard[i][j+1]
+						fnd6 =six_direction(i, j)	;	//gameboard[i+1][j-1]
+						fnd7 =sev_direction(i, j)	;	//gameboard[i+1][j]
+						fnd8 =eig_direction(i, j)	;	//gameboard[i+1][j+1]
+				
+						res = fnd1 + fnd2 + fnd3 + fnd4 + fnd5 + fnd6 + fnd7 + fnd8 ;
+						
+						if(res >= 1)
+						{
+							res++	;
+						}
+						else
+						{
+							res = res	;
+						}
+					}
+					else
+					{
+						gameboard[i][j] = gameboard[i][j]	;
+					}	
+				}
+			}
+			if(res > 8)
+			{
+				fnd = 1;
+			}
+			else
+			{
+				fnd = 0;
+			}	
+			break	;		
+	}
+	
+	
+	return fnd	;
+} 
+int one_direction(int i, int j, int turn)
+{
+	int k	;
+	int fnd	;
+	
+/*	while(fnd =0)
+	{
+		for(k=2; i-k > 0 && j-k > 0; k++)
+		{
+			if(gameboard[i-k][j-k] == turn || gameboard[i-k][j-k] == 0)
+			{
+				fnd =0	;
+			}
+			else
+			{
+				fnd =1	;
+			}	
+		}
+	}
+*/	
+	
+	
+	 
+	//1번 조건 : gameboard[i-1][j-1] != turn
+	//2번 조건 : for문 돌리는 동안 turn을 만나지 않고 0이 나와야 함. != turn은 for문으로 계속 탐색  
+	if((gameboard[i-1][j-1] != turn) && (gameboard[i-1][j-1] != 0))
+	{
+		fnd =1	;
+	}
+	else
+	{
+		fnd =0;
+	}
+	
+	
+	return fnd	; 
+}
